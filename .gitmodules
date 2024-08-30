@@ -1,0 +1,9 @@
+[submodule "dependencies/vulkan/Vulkan-Headers"]
+	path = dependencies/vulkan/Vulkan-Headers
+	url = https://github.com/KhronosGroup/Vulkan-Headers.git
+[submodule "dependencies/vulkan/Vulkan-Loader"]
+	path = dependencies/vulkan/Vulkan-Loader
+	url = https://github.com/KhronosGroup/Vulkan-Loader.git
+[submodule "src/c-logger"]
+	path = src/c-logger
+	url = https://github.com/yksz/c-logger.git

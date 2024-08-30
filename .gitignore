@@ -1,3 +1,5 @@
 .vscode
 build
 logs
+src\c-logger\logger.o
+src\c-logger\loggerconf.o

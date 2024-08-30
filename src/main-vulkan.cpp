@@ -1,9 +1,32 @@
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
-#include "c-logger/logger.h"  // Include your logger header file
+#include "c-logger/src/logger.h"  // Include your logger header file
 #include <cstdint>
+#include <vector>
+#include <filesystem>
+#include <fstream>
+
+#ifdef NDEBUG
+const bool debug = false;
+#else
+const bool debug = true;
+#endif
 
 int main() {
+    {
+        try { //manage files: rename "lastest" to "previous", create lastest.
+            std::filesystem::remove("logs/previous.log");
+            std::filesystem::rename("logs/lastest.log", "logs/previous.log");
+        } catch(std::filesystem::__cxx11::filesystem_error) {} //its fine
+        std::filesystem::create_directory("logs");
+        std::fstream createLogFile("logs/lastest.log");
+        
+        
+        logger_initConsoleLogger(stdout); //code from readme example
+        logger_initFileLogger("logs/lastest.log", 1024 * 1024, 5);
+        logger_setLevel(debug ? LogLevel_DEBUG : LogLevel_INFO);
+        LOG_INFO("logging started");
+    }
     // Initialize GLFW
     if (!glfwInit()) {
         LOG_FATAL("Failed to initialize GLFW");
