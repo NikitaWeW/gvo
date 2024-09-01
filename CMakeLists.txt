@@ -50,6 +50,7 @@ if(NOT DEFINED VULKAN_BIN)
 
         execute_process( # manualy configure and install vulkan headers (i have no idea)
             COMMAND ${CMAKE_COMMAND} -S ${PROJECT_SOURCE_DIR}/dependencies/vulkan/Vulkan-Headers -B ${PROJECT_BINARY_DIR}/Vulkan-Headers 
+                -G ${CMAKE_GENERATOR}
             RESULT_VARIABLE RESULT
         )
         if(NOT ${RESULT} EQUAL 0)
@@ -67,6 +68,7 @@ if(NOT DEFINED VULKAN_BIN)
         # manualy configure and build vulkan loadrer (its easier than subdirectory)
         execute_process(
             COMMAND ${CMAKE_COMMAND} -S ${PROJECT_SOURCE_DIR}/dependencies/vulkan/Vulkan-Loader -B ${PROJECT_BINARY_DIR}/Vulkan-Loader 
+                -G ${CMAKE_GENERATOR}
                 -D CMAKE_PREFIX_PATH=${PROJECT_BINARY_DIR}/Vulkan-Headers/install/share/cmake/VulkanHeaders
                 -D VULKAN_HEADERS_INSTALL_DIR=${PROJECT_BINARY_DIR}/Vulkan-Headers
             RESULT_VARIABLE RESULT
@@ -92,7 +94,8 @@ if(NOT DEFINED VULKAN_BIN)
         message(WARNING "unable to build vulkan loader")
         set(VULKAN_BIN ${PROJECT_SOURCE_DIR}/dependencies/vulkan/Vulkan-Loader/build/install/lib/vulkan-1.lib)
     endif()
-    set(VULKAN_BIN ${PROJECT_BINARY_DIR}/Vulkan-Loader/install/lib/vulkan-1.lib)
+    file(GLOB VULKAN_BIN ${PROJECT_BINARY_DIR}/Vulkan-Loader/install/lib/*vulkan-1*)
+    message(>>>>>>>>>>>>>>>>>>>>>>>>>>>>${VULKAN_BIN})
 endif()
 
 set(GLFW_EXISTS (EXISTS ${GLFW_INCLUDE_DIR} AND EXISTS ${GLFW_BIN}))
