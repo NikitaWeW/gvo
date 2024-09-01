@@ -95,7 +95,6 @@ if(NOT DEFINED VULKAN_BIN)
         set(VULKAN_BIN ${PROJECT_SOURCE_DIR}/dependencies/vulkan/Vulkan-Loader/build/install/lib/vulkan-1.lib)
     endif()
     file(GLOB VULKAN_BIN ${PROJECT_BINARY_DIR}/Vulkan-Loader/install/lib/*vulkan-1*)
-    message(>>>>>>>>>>>>>>>>>>>>>>>>>>>>${VULKAN_BIN})
 endif()
 
 set(GLFW_EXISTS (EXISTS ${GLFW_INCLUDE_DIR} AND EXISTS ${GLFW_BIN}))
