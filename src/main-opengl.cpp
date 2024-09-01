@@ -1,7 +1,7 @@
 #include <glad/glad.h> //important includes
 #include <GLFW/glfw3.h>
 
-#include "c-logger/logger.h"
+#include "c-logger/src/logger.h"
 
 #include <iostream> //standart includes
 #include <string>
