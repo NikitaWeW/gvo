@@ -1,0 +1,1 @@
+﻿set(GLFW_BIN ${PROJECT_SOURCE_DIR}/dependencies/glfw/lib/libglfw3.a)

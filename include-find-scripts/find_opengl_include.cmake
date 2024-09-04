@@ -1,0 +1,1 @@
+﻿set(OPENGL_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/dependencies/glad/include/)

@@ -1,3 +1,4 @@
+# outdated readme. working on new one :)
 ## about
 *note: this project is currently in development*
 

@@ -1,0 +1,1 @@
+﻿set(OPENGL_BIN ${PROJECT_SOURCE_DIR}/dependencies/glad/lib/libglad.a)

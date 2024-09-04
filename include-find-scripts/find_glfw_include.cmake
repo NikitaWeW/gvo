@@ -1,0 +1,1 @@
+﻿set(GLFW_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/dependencies/glfw/include/)

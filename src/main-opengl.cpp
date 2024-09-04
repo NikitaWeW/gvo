@@ -22,7 +22,7 @@ int main()
         try { //manage files: rename "lastest" to "previous", create lastest.
             std::filesystem::remove("logs/previous.log");
             std::filesystem::rename("logs/lastest.log", "logs/previous.log");
-        } catch(std::filesystem::__cxx11::filesystem_error) {} //its fine
+        } catch(std::filesystem::filesystem_error) {} //its fine
         std::filesystem::create_directory("logs");
         std::fstream createLogFile("logs/lastest.log");
         
