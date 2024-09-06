@@ -21,10 +21,10 @@ if(NOT DEFINED SRC_DEPS)
 endif()
 add_executable(${PROJECT_NAME} ${SRC} ${SRC_DEPS})
 
-set(GVO_DEFAULT_SCRIPT_PATHS ${PROJECT_SOURCE_DIR};binary-find-scripts)
+set(GVO_DEFAULT_SCRIPT_PATHS ${PROJECT_SOURCE_DIR};binary-find-scripts;include-find-scripts)
 
-gvo_find(glfw include-find-scripts)
-gvo_find(vulkan include-find-scripts)
+gvo_find(glfw "")
+gvo_find(vulkan "")
 gvo_find(opengl include-find-scripts)
 
 macro(connect TARGET_NAME LIBRARY_NAME FATAL)
