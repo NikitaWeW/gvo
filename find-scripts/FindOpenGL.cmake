@@ -1,0 +1,8 @@
+﻿if(NOT DEFINED OPENGL_INCLUDE_DIRS)
+    set(OPENGL_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/glad/include/)
+endif()
+if(NOT DEFINED OPENGL_LIBRARIES)
+    add_library(glad ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/glad/src/glad.c)
+    target_include_directories(glad PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/glad/include/)
+    set(OPENGL_LIBRARIES glad)
+endif()

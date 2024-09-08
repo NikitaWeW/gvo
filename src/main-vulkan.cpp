@@ -1,6 +1,6 @@
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
-#include "c-logger/src/logger.h"  // Include your logger header file
+#include <logger.h>
 #include <cstdint>
 #include <vector>
 #include <filesystem>
