@@ -1,47 +1,36 @@
-# outdated readme. working on new one :)
-## about
-*note: this project is currently in development*
+# GVO - cmake glfw vulkan opengl setup
+This project provides [vulkan headers](https://github.com/KhronosGroup/Vulkan-Headers), [vulkan loader](https://github.com/KhronosGroup/Vulkan-Loader), [glfw](https://github.com/glfw/glfw) git submodules, [glad opengl loader library](https://glad.dav1d.de/), and scripts to find them. 
 
-Hi. Thank you for cloning/visiting this project. That's the setup for [glfw](https://www.glfw.org/), [vulkan](https://www.vulkan.org/), and [opengl](https://www.khronos.org/opengl/).
+User / cmake script could also set Xxx_INCLUDE_DIRS and Xxx_LIBRARIES and these wont overrride. 
 
-The purpose of this project os 
+You can use it however you want buti recommend add gvo as submodule and use it as cmake subdirectory
 
-## Dependencies
-This project has everything to compile and run on windows.
-
-## build
-First, clone it with **recursive** option because there is submodules for vulkan and logger:
+## Using gvo
+First, clone it with **recursive** option because gvo has submodules.
 ```
 git clone --recursive https://github.com/NikitaWeW/gvo.git
 ```
-If you want to use glfw/vulkan/opengl provided by this project just run
-```bash
-mkdir build
-cmake -S . -B build
-cmake --build build
-```
-To run run
-``` bash
-build/gvo
-```
-If you want to use your own libraries or sources, you can specify the path to them using
-``` bash
-cmake -S . -B build -D VARIABLE='path/to'
-```
-Here's all the variables that you can set:
-| variable | description | example |
-| :------- | :---------- | :------ |
-| SRC | path to your source files | `-D SRC='main.c other.cpp'` | 
-| SRC_DEPS | path to your additional source/object files (made to separate your source files and small dependencies) | `-D SRC_DEPS='logger.o loggerconf.c'` | 
-| GLFW_INCLUDE_DIR | path to glfw include folder | `-D GLFW_INCLUDE_DIR='glfw/include'` |
-| GL_INCLUDE_DIR | path to opengl include folder | `-D GL_INCLUDE_DIR='glad/lib/libglad.a'` |
-| VULKAN_INCLUDE_DIR | path to vulkan include folder | `-D VULKAN_INCLUDE_DIR='VulkanSDK/Include'` |
-| GLFW_BIN | path to glfw loader library file | `-D GLFW_BIN='glfw/build/src/libglfw.a'` |
-| GL_BIN | path to opengl library file | `-D GL_BIN='glad/include'` |
-| VULKAN_BIN | path to vulkan library file  | `-D VULKAN_BIN='VulkanSDK/Lib/vulkan-1.lib'` |
----
-If the glfw or glad dependency does not work, you need to use your own glfw or glad. If vulkan or logger do not work, recompile them (they are submodules: see their README).
+Here is some basic gvo usage:
+``` cmake
+set(VULKAN ON) # set requiered dependencies
+set(OPENGL OFF)
 
-*if  you found any kind of error/flaw feel free to create github issue or maybe even a pr )*
+add_subdirectory(gvo) # add gvo as subdirectory. it will create "gvo" interface target.
+
+add_executable(mymain src/main)
+
+target_link_libraries(mymain gvo) # link to gvo target. it will connect both include dirs and libraris.
+```
+If you want to use your own libraries or sources, you can specify the path to by setting `Xxx_INCLUDE_DIRS` for include directories and `Xxx_LIBRARIES` for libraris. Where `Xxx` is the name of the library e.g. `VULKAN_INCLUDE_DIRS`, `VULKAN_LIBRARIES`.
+
+## Options
+| option | description |
+| :----- | :---------- |
+| GLFW | you use glfw. if set to false glad wont build and include directories wont set. | 
+| VULKAN | you use vulkan. if set to false glad wont build and include directories wont set. | 
+| OPENGL | you use opengl. if set to false glad wont build and include directories wont set. |
+---
+
+*if  you found any kind of error/flaw please, create github issue or maybe even a pr )*
 
 
