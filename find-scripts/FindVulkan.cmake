@@ -10,14 +10,14 @@ if(NOT DEFINED VULKAN_INCLUDE_DIRS)
     set(VULKAN_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/vulkan/Vulkan-Headers/include/)
 endif()
 
-if(NOT DEFINED VULKAN_BUILD_GENERATOR)
-    set(VULKAN_BUILD_GENERATOR ${CMAKE_GENERATOR})
+if(NOT DEFINED VULKAN_GENERATOR)
+    set(VULKAN_GENERATOR ${CMAKE_GENERATOR})
 endif()
 
 if(NOT DEFINED VULKAN_LIBRARIES)
     execute_process( # manualy configure and install vulkan headers (i have no idea)
         COMMAND ${CMAKE_COMMAND} -S ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/vulkan/Vulkan-Headers -B ${PROJECT_BINARY_DIR}/Vulkan-Headers 
-            -G ${VULKAN_BUILD_GENERATOR}
+            -G ${VULKAN_GENERATOR}
         RESULT_VARIABLE RESULT
     )
     if(NOT ${RESULT} EQUAL 0)

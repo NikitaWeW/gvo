@@ -30,6 +30,7 @@ If you want to use your own libraries or sources, you can specify the path to by
 | VULKAN | you use vulkan. if set to false default library wont build and default include directories wont set. | 
 | OPENGL | you use opengl. if set to false default library wont build and default include directories wont set. |
 | LOGGER | you use [c-logger](https://github.com/yksz/c-logger). if set to false default library wont build and default include directories wont set. |
+| VULKAN_GENERATOR | generator to use when configuring vulkan headers. |
 ---
 
 *if  you found any kind of error/flaw please, create github issue or maybe even a pr )*
