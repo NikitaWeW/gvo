@@ -16,7 +16,7 @@ endif()
 
 if(NOT DEFINED VULKAN_LIBRARIES)
     execute_process( # manualy configure and install vulkan headers (i have no idea)
-        COMMAND ${CMAKE_COMMAND} -S ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/vulkan/Vulkan-Headers -B ${PROJECT_BINARY_DIR}/Vulkan-Headers 
+        COMMAND ${CMAKE_COMMAND} -S ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/vulkan/Vulkan-Headers -B ${CMgiAKE_CURRENT_BINARY_DIR}/Vulkan-Headers 
             -G ${VULKAN_GENERATOR}
         RESULT_VARIABLE RESULT
     )
@@ -24,7 +24,7 @@ if(NOT DEFINED VULKAN_LIBRARIES)
         message(WARNING "failed to configure vulkan headers")
     else()
         execute_process(
-            COMMAND ${CMAKE_COMMAND} --install ${PROJECT_BINARY_DIR}/Vulkan-Headers --prefix ${PROJECT_BINARY_DIR}/Vulkan-Headers/
+            COMMAND ${CMAKE_COMMAND} --install ${CMAKE_CURRENT_BINARY_DIR}/Vulkan-Headers --prefix ${CMAKE_CURRENT_BINARY_DIR}/Vulkan-Headers/
             RESULT_VARIABLE RESULT
         )
     endif()
@@ -32,10 +32,10 @@ if(NOT DEFINED VULKAN_LIBRARIES)
         message(WARNING "failed to install vulkan headers")
     endif()
     if(NOT DEFINED VULKAN_INCLUDE_DIR)
-        set(VULKAN_INCLUDE_DIRS ${PROJECT_BINARY_DIR}/Vulkan-Headers/include)
+        set(VULKAN_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR}/Vulkan-Headers/include)
     endif()
 
-    set(VULKAN_HEADERS_INSTALL_DIR ${PROJECT_BINARY_DIR}/Vulkan-Headers)
+    set(VULKAN_HEADERS_INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/Vulkan-Headers)
     add_subdirectory(dependencies/vulkan/Vulkan-Loader ${PROJECT_BUILD_DIR}/Vulkan-Loader)
     set(VULKAN_LIBRARIES vulkan)
     unset(RESULT)
