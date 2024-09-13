@@ -6,33 +6,19 @@
 #
 #THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-project(gvo C)
+project(gvo)
 
-cmake_policy(SET CMP0077 NEW)
-set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 add_library(gvo INTERFACE)
 
-option(GLFW ON)
-option(VULKAN ON)
-option(OPENGL ON)
-option(LOGGER ON)
+foreach(GVO_DEP_NAME ${GVO_DEPS})
+    string(TOUPPER ${GVO_DEP_NAME} GVO_DEP_NAME_CAP)
 
-if(VULKAN)
-    message(STATUS "Finding Vulkan")
-    include(find-scripts/FindVulkan.cmake)
-endif()
-if(OPENGL)
-    message(STATUS "Finding OpenGL")
-    include(find-scripts/FindOpenGL.cmake)
-endif()
-if(GLFW)
-    message(STATUS "Finding GLFW")
-    include(find-scripts/FindGLFW.cmake)
-endif()
-if(LOGGER)
-    message(STATUS "Finding Logger")
-    include(find-scripts/FindLogger.cmake)
-endif()
-
-target_link_libraries(gvo INTERFACE ${GLFW_LIBRARIES} INTERFACE ${VULKAN_LIBRARIES} INTERFACE ${OPENGL_LIBRARIES} INTERFACE ${LOGGER_LIBRARIES})
-target_include_directories(gvo INTERFACE ${GLFW_INCLUDE_DIRS} INTERFACE ${VULKAN_INCLUDE_DIRS} INTERFACE ${OPENGL_INCLUDE_DIRS} INTERFACE ${LOGGER_INCLUDE_DIRS})
+    message(STATUS "Finding ${GVO_DEP_NAME}")
+    include("find-scripts/find${GVO_DEP_NAME}.cmake")
+    message(STATUS "Done finding ${GVO_DEP_NAME}")
+    
+    target_link_libraries(gvo INTERFACE ${${GVO_DEP_NAME_CAP}_LIBRARIES})
+    target_include_directories(gvo INTERFACE ${${GVO_DEP_NAME_CAP}_INCLUDE_DIRS})
+    
+    unset(GVO_DEP_NAME_CAP)
+endforeach()
