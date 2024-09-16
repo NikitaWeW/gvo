@@ -10,3 +10,12 @@
 [submodule "dependencies/glfw"]
 	path = dependencies/glfw
 	url = https://github.com/glfw/glfw.git
+[submodule "dependencies/assimp"]
+	path = dependencies/assimp
+	url = https://github.com/assimp/assimp.git
+[submodule "dependencies/glm"]
+	path = dependencies/glm
+	url = https://github.com/icaven/glm.git
+[submodule "dependencies/openal"]
+	path = dependencies/openal
+	url = https://github.com/kcat/openal-soft.git

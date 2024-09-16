@@ -6,19 +6,46 @@
 #
 #THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-project(gvo)
+set(LIBRARY_EXTENSIONS "lib" "dll" "dylib" "a" "so" "framework")
 
+project(gvo)
 add_library(gvo INTERFACE)
 
 foreach(GVO_DEP_NAME ${GVO_DEPS})
     string(TOUPPER ${GVO_DEP_NAME} GVO_DEP_NAME_CAP)
 
     message(STATUS "Finding ${GVO_DEP_NAME}")
-    include("find-scripts/find${GVO_DEP_NAME}.cmake")
+    include("find-scripts/Find${GVO_DEP_NAME}.cmake")
     message(STATUS "Done finding ${GVO_DEP_NAME}")
     
-    target_link_libraries(gvo INTERFACE ${${GVO_DEP_NAME_CAP}_LIBRARIES})
-    target_include_directories(gvo INTERFACE ${${GVO_DEP_NAME_CAP}_INCLUDE_DIRS})
-    
-    unset(GVO_DEP_NAME_CAP)
+    if(DEFINED ${GVO_DEP_NAME_CAP}_LIBRARIES) # link libraries
+        target_link_libraries(gvo INTERFACE ${${GVO_DEP_NAME_CAP}_LIBRARIES})
+    endif()
+    if(DEFINED ${GVO_DEP_NAME_CAP}_INCLUDE_DIRS) # include dirs
+        target_include_directories(gvo INTERFACE ${${GVO_DEP_NAME_CAP}_INCLUDE_DIRS})
+        install(DIRECTORY ${${GVO_DEP_NAME_CAP}_INCLUDE_DIRS} DESTINATION gvo/include)
+    endif()
+
+
+    foreach(${GVO_DEP_NAME_CAP}_LIBRARY ${${GVO_DEP_NAME_CAP}_LIBRARIES}) # install libraries
+        if(TARGET ${${GVO_DEP_NAME_CAP}_LIBRARY})
+            install(TARGETS ${${GVO_DEP_NAME_CAP}_LIBRARY} DESTINATION gvo/lib)
+        else()
+            set(ADDITIONAL_LIBRARY_FILES_FOUND)
+            foreach(LIBRARY_EXTENSION ${LIBRARY_EXTENSIONS})
+                get_filename_component(ADDITIONAL_LIBRARY_FILES_DIR ${${GVO_DEP_NAME_CAP}_LIBRARY} DIRECTORY)
+
+                file(GLOB ADDITIONAL_LIBRARY_FILES "${ADDITIONAL_LIBRARY_FILES_DIR}/*.${LIBRARY_EXTENSION}*")
+                list(APPEND ADDITIONAL_LIBRARY_FILES_FOUND ${ADDITIONAL_LIBRARY_FILES})
+            endforeach()
+            unset(ADDITIONAL_LIBRARY_NAME_FILES)
+
+            install(FILES ${${GVO_DEP_NAME_CAP}_LIBRARY} ${ADDITIONAL_LIBRARY_FILES_FOUND} ${${GVO_DEP_NAME_CAP}_FILES_TO_INSTALL} DESTINATION gvo/lib)
+        endif()
+    endforeach()
 endforeach()
+unset(ADDITIONAL_LIBRARY_FILES_FOUND)
+unset(ADDITIONAL_LIBRARY_FILES_DIR)
+unset(GVO_DEP_NAME_CAP)
+
+unset(LIBRARY_EXTENSIONS)

@@ -14,6 +14,7 @@ if(NOT DEFINED VULKAN_LIBRARIES)
     execute_process( # manualy configure and install vulkan headers (i have no idea)
         COMMAND ${CMAKE_COMMAND} -S ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/vulkan/Vulkan-Headers -B ${CMAKE_CURRENT_BINARY_DIR}/Vulkan-Headers 
             -G ${CMAKE_GENERATOR}
+            -D CMAKE_MAKE_PROGRAM=${CMAKE_MAKE_PROGRAM}
         RESULT_VARIABLE RESULT
     )
     if(NOT ${RESULT} EQUAL 0)
