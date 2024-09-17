@@ -26,6 +26,7 @@ foreach(GVO_DEP_NAME ${GVO_DEPS})
         install(DIRECTORY ${${GVO_DEP_NAME_CAP}_INCLUDE_DIRS} DESTINATION gvo/include)
     endif()
 
+    install(${${GVO_DEP_NAME_CAP}_DIRECTORIES_TO_INSTALL})
 
     foreach(${GVO_DEP_NAME_CAP}_LIBRARY ${${GVO_DEP_NAME_CAP}_LIBRARIES}) # install libraries
         if(TARGET ${${GVO_DEP_NAME_CAP}_LIBRARY})
@@ -40,7 +41,7 @@ foreach(GVO_DEP_NAME ${GVO_DEPS})
             endforeach()
             unset(ADDITIONAL_LIBRARY_NAME_FILES)
 
-            install(FILES ${${GVO_DEP_NAME_CAP}_LIBRARY} ${ADDITIONAL_LIBRARY_FILES_FOUND} ${${GVO_DEP_NAME_CAP}_FILES_TO_INSTALL} DESTINATION gvo/lib)
+            install(FILES ${${GVO_DEP_NAME_CAP}_LIBRARY} ${ADDITIONAL_LIBRARY_FILES_FOUND} ${${GVO_DEP_NAME_CAP}_LIBRARY_FILES_TO_INSTALL} DESTINATION gvo/lib)
         endif()
     endforeach()
 endforeach()
