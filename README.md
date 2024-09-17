@@ -1,17 +1,16 @@
-# outdated. working on a new one
 # GVO - cmake glfw vulkan opengl (and other) setup
-This project provides [these dependencies]() as git submodules, and scripts to build and find them. 
+This project provides [these dependencies](#currently-supported-dependencies), and scripts to build and find them. 
 
-User / cmake script could also set Xxx_INCLUDE_DIRS and Xxx_LIBRARIES and these wont overrride. 
+You set the GVO_DEPS and add gvo as subdirectory. gvo will iterate over GVO_DEPS and automaticly include all the requiered scripts that will set [output variables](#output) and use these.
 
-You can use it however you want buti recommend add gvo as submodule and use it as cmake subdirectory
+You can use it however you like, but I recommend adding gvo as a submodule and using it as a cmake subdirectory.
 
 ## Using gvo
 First, clone it with **recursive** option because gvo has submodules.
 ```
 git clone --recursive https://github.com/NikitaWeW/gvo.git
 ```
-All you need is set GVO_DEPS list and add gvo as subdirectory. gvo will iterate over GVO_DEPS and automaticly set include directories and  
+
 Here is some basic gvo usage:
 ``` cmake
 set(GVO_DEPS Vulkan OpenGL GLFW Logger assimp OpenAL GLM) # set requiered dependencies
@@ -22,11 +21,32 @@ add_executable(mymain src/main.cpp)
 
 target_link_libraries(mymain gvo) # link to gvo target. it will connect both include dirs and libraris.
 ```
+## Input
+`GVO_DEPS` should be set before adding gvo subdirectory. `GVO_DEPS` list constains [names of the dependencies](#currently-supported-dependencies). Its used to locate and include find scripts (these build the dependency and set [output variables](#output)). 
+## Currently supported dependencies:
+- [assimp](https://github.com/assimp/assimp)
+- [GLFW](https://github.com/glfw/glfw)
+- [GLM](https://github.com/icaven/glm)
+- [Logger](https://github.com/yksz/c-logger)
+- [OpenAL](https://github.com/kcat/openal-soft)
+- [OpenGL](https://glad.dav1d.de/)
+- [Vulkan](https://github.com/KhronosGroup/Vulkan-Headers)
 
-## Output va
-If you want to use your own libraries or sources, you can specify the path to by setting `Xxx_INCLUDE_DIRS` for include directories and `Xxx_LIBRARIES` for libraris. 
 
-Where `Xxx` is the name of the library e.g. `VULKAN_INCLUDE_DIRS`, `VULKAN_LIBRARIES` . 
+## Output
+The variables below are set by the find script and already included / linked to the `gvo` target / installed in gvo directory 
+
+`Xxx` is the name of the library e.g. `VULKAN_INCLUDE_DIRS`, `VULKAN_LIBRARIES`. 
+| variable | description |
+| :- | :- |
+| `Xxx_INCLUDE_DIRS` | variable / list with include directories of the dependency |
+| `Xxx_LIBRARIES` | variable / list with library files of the dependency (Only for linking) |
+| `Xxx_LIBRARY_FILES_TO_INSTALL` | variable / list with the library files to install in `gvo/lib` |
+| `Xxx_FILES_TO_INSTALL` | variable / list with the additional files to install in `gvo` |
+| `Xxx__DIRECTORIES_TO_INSTALL` | variable / list with the additional directories to install in `gvo` |
+---
+
+User / cmake scripts could also set Xxx_INCLUDE_DIRS and Xxx_LIBRARIES, and these should not be overridden (currently they are not overridden. That depends on the find script). 
 
 Also, you can use `Xxx_INCLUDE_DIRS` and `Xxx_LIBRARIES` for your purposes:
 ``` cmake
