@@ -43,7 +43,7 @@ The variables below are set by the find script and already included / linked to 
 | `Xxx_LIBRARIES` | variable / list with library files of the dependency (Only for linking) |
 | `Xxx_LIBRARY_FILES_TO_INSTALL` | variable / list with the library files to install in `gvo/lib` |
 | `Xxx_FILES_TO_INSTALL` | variable / list with the additional files to install in `gvo` |
-| `Xxx__DIRECTORIES_TO_INSTALL` | variable / list with the additional directories to install in `gvo` |
+| `Xxx_DIRECTORIES_TO_INSTALL` | variable / list with the additional directories to install in `gvo` |
 ---
 
 User / cmake scripts could also set Xxx_INCLUDE_DIRS and Xxx_LIBRARIES, and these should not be overridden (currently they are not overridden. That depends on the find script). 
@@ -81,6 +81,9 @@ assimp:
 ```
 *Note, that glad, glfw, etc. are just target names.*
 
-*if  you found any kind of bug / flaw please, do create github issue or maybe even a pr )*
+## Installing
+Gvo installs in `prefix/gvo` directory. It installs dependencies include directories in `prefix/gvo/include` directory, library files in `prefix/gvo/lib` directory. 
+
+*if  you found any kind of bug / flaw or have questions please, do create github issue or maybe even a pr )*
 
 
