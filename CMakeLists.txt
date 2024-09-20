@@ -29,8 +29,9 @@ foreach(GVO_DEP_NAME ${GVO_DEPS})
     install(DIRECTORY ${${GVO_DEP_NAME_CAP}_DIRECTORIES_TO_INSTALL} DESTINATION gvo)
     install(FILES ${${GVO_DEP_NAME_CAP}_FILES_TO_INSTALL} DESTINATION gvo)
 
-    foreach(${GVO_DEP_NAME_CAP}_LIBRARY ${${GVO_DEP_NAME_CAP}_LIBRARIES}) # install libraries
+    foreach(${GVO_DEP_NAME_CAP}_LIBRARY ${${GVO_DEP_NAME_CAP}_LIBRARIES}) # could be list
         if(TARGET ${${GVO_DEP_NAME_CAP}_LIBRARY})
+            add_dependencies(gvo ${${GVO_DEP_NAME_CAP}_LIBRARY})
             install(TARGETS ${${GVO_DEP_NAME_CAP}_LIBRARY} DESTINATION gvo/lib)
         else()
             set(ADDITIONAL_LIBRARY_FILES_FOUND)
