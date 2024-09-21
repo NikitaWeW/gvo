@@ -5,7 +5,6 @@
 #The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 #
 #THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-set(LIBRARY_EXTENSIONS "lib" "dll" "dylib" "a" "so" "framework")
 
 project(gvo)
 add_library(gvo INTERFACE)
@@ -42,31 +41,28 @@ foreach(GVO_DEP_NAME ${GVO_DEPS})
         install(DIRECTORY ${${GVO_DEP_NAME_CAP}_INCLUDE_DIRS} DESTINATION gvo/include)
     endif()
 
-    install(DIRECTORY ${${GVO_DEP_NAME_CAP}_DIRECTORIES_TO_INSTALL} DESTINATION gvo)
+    install(DIRECTORY ${${GVO_DEP_NAME_CAP}_DIRECTORIES_TO_INSTALL} DESTINATION gvo) # install additional things
     install(FILES ${${GVO_DEP_NAME_CAP}_FILES_TO_INSTALL} DESTINATION gvo)
 
     foreach(${GVO_DEP_NAME_CAP}_LIBRARY ${${GVO_DEP_NAME_CAP}_LIBRARIES}) # could be list
         if(TARGET ${${GVO_DEP_NAME_CAP}_LIBRARY})
             add_dependencies(gvo ${${GVO_DEP_NAME_CAP}_LIBRARY})
             install(TARGETS ${${GVO_DEP_NAME_CAP}_LIBRARY} DESTINATION gvo/lib)
-        else()
-            set(ADDITIONAL_LIBRARY_FILES_FOUND)
-            foreach(LIBRARY_EXTENSION ${LIBRARY_EXTENSIONS})
-                get_filename_component(ADDITIONAL_LIBRARY_FILES_DIR ${${GVO_DEP_NAME_CAP}_LIBRARY} DIRECTORY)
-
-                file(GLOB ADDITIONAL_LIBRARY_FILES "${ADDITIONAL_LIBRARY_FILES_DIR}/*.${LIBRARY_EXTENSION}*")
-                list(APPEND ADDITIONAL_LIBRARY_FILES_FOUND ${ADDITIONAL_LIBRARY_FILES})
+        else() # its a file
+            set(GVO_ADDITIONAL_LIBRARY_FILES_FOUND) # get all files with lib dll dylib a so framework extensions
+            foreach(GVO_LIBRARY_EXTENSION "lib" "dll" "dylib" "a" "so" "framework")
+                get_filename_component(GVO_ADDITIONAL_LIBRARY_FILES_DIR ${${GVO_DEP_NAME_CAP}_LIBRARY} DIRECTORY)  # get directory of library file
+                file(GLOB GVO_ADDITIONAL_LIBRARY_FILES "${GVO_ADDITIONAL_LIBRARY_FILES_DIR}/*.${GVO_LIBRARY_EXTENSION}") # find files with extension i.e. .a -> lib1.dll.a lib2.a
+                list(APPEND GVO_ADDITIONAL_LIBRARY_FILES_FOUND ${GVO_ADDITIONAL_LIBRARY_FILES}) # add these files
             endforeach()
-            unset(ADDITIONAL_LIBRARY_NAME_FILES)
+            unset(GVO_ADDITIONAL_LIBRARY_FILES)
+            unset(GVO_ADDITIONAL_LIBRARY_FILES_DIR)
 
-            install(FILES ${${GVO_DEP_NAME_CAP}_LIBRARY} ${ADDITIONAL_LIBRARY_FILES_FOUND} ${${GVO_DEP_NAME_CAP}_LIBRARY_FILES_TO_INSTALL} DESTINATION gvo/lib)
+            install(FILES ${${GVO_DEP_NAME_CAP}_LIBRARY} ${GVO_ADDITIONAL_LIBRARY_FILES_FOUND} ${${GVO_DEP_NAME_CAP}_LIBRARY_FILES_TO_INSTALL} DESTINATION gvo/lib)
+            unset(GVO_ADDITIONAL_LIBRARY_FILES_FOUND)
         endif()
     endforeach()
 
     unset(GVO_FIND_SCRIPT)
 endforeach()
-unset(ADDITIONAL_LIBRARY_FILES_FOUND)
-unset(ADDITIONAL_LIBRARY_FILES_DIR)
 unset(GVO_DEP_NAME_CAP)
-
-unset(LIBRARY_EXTENSIONS)
