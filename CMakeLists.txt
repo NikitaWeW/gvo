@@ -49,7 +49,8 @@ foreach(GVO_DEP_NAME ${GVO_DEPS})
         if(TARGET ${${GVO_DEP_NAME_CAP}_LIBRARY})
             add_dependencies(gvo ${${GVO_DEP_NAME_CAP}_LIBRARY})
             install(TARGETS ${${GVO_DEP_NAME_CAP}_LIBRARY} DESTINATION gvo/lib)
-        else()
+        else() # its a file
+            if(NOT DEFINED ${GVO_DEP_NAME_CAP}_LIBRARIES_INSTALL)
             set(ADDITIONAL_LIBRARY_FILES_FOUND)
             foreach(LIBRARY_EXTENSION ${LIBRARY_EXTENSIONS})
                 get_filename_component(ADDITIONAL_LIBRARY_FILES_DIR ${${GVO_DEP_NAME_CAP}_LIBRARY} DIRECTORY)
@@ -59,7 +60,7 @@ foreach(GVO_DEP_NAME ${GVO_DEPS})
             endforeach()
             unset(ADDITIONAL_LIBRARY_NAME_FILES)
 
-            install(FILES ${${GVO_DEP_NAME_CAP}_LIBRARY} ${ADDITIONAL_LIBRARY_FILES_FOUND} ${${GVO_DEP_NAME_CAP}_LIBRARY_FILES_TO_INSTALL} DESTINATION gvo/lib)
+            install(FILES ${${GVO_DEP_NAME_CAP}_LIBRARY} ${ADDITIONAL_LIBRARY_FILES_FOUND} ${${GVO_DEP_NAME_CAP}_LIBRARIES_INSTALL} DESTINATION gvo/lib)
         endif()
     endforeach()
 
