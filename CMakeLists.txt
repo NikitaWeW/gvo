@@ -26,7 +26,7 @@ foreach(GVO_DEP_NAME ${GVO_DEPS})
     unset(GVO_DIR)
 
     if(GVO_FIND_SCRIPT)
-        message(STATUS "fonud script: \"${GVO_FIND_SCRIPT}\"")
+        message(STATUS "Found script: \"${GVO_FIND_SCRIPT}\"")
         include(${GVO_FIND_SCRIPT})
     else()
         message(WARNING "find script not found!")
