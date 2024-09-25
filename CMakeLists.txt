@@ -12,7 +12,7 @@ add_library(gvo INTERFACE)
 foreach(GVO_DEP_NAME ${GVO_DEPS})
     string(TOUPPER ${GVO_DEP_NAME} GVO_DEP_NAME_CAP)
 
-    message(STATUS "Finding ${GVO_DEP_NAME}")
+    message(STATUS "Finding ${GVO_DEP_NAME}.")
     foreach(GVO_DIR "scripts" ${GVO_SCRIPT_PATHS}) # find find script
         file(GLOB GVO_FIND_SCRIPT "${GVO_DIR}/Find${GVO_DEP_NAME}.cmake")
         if(GVO_FIND_SCRIPT)
@@ -23,13 +23,13 @@ foreach(GVO_DEP_NAME ${GVO_DEPS})
     unset(GVO_DIR)
 
     if(GVO_FIND_SCRIPT)
-        message(STATUS "Found script: \"${GVO_FIND_SCRIPT}\"")
+        message(STATUS "Found script: \"${GVO_FIND_SCRIPT}\" for dependency ${GVO_DEP_NAME}.")
         include(${GVO_FIND_SCRIPT})
     else()
-        message(WARNING "find script not found!")
+        message(WARNING "Find script not found for dependency ${GVO_DEP_NAME}!")
         continue() # skip that dependency
     endif()
-    message(STATUS "Done finding ${GVO_DEP_NAME}")
+    message(STATUS "Done finding ${GVO_DEP_NAME}.")
     
     if(DEFINED ${GVO_DEP_NAME_CAP}_LIBRARIES) # link libraries
         target_link_libraries(gvo INTERFACE ${${GVO_DEP_NAME_CAP}_LIBRARIES})
@@ -38,9 +38,6 @@ foreach(GVO_DEP_NAME ${GVO_DEPS})
         target_include_directories(gvo INTERFACE ${${GVO_DEP_NAME_CAP}_INCLUDE_DIRS})
         install(DIRECTORY ${${GVO_DEP_NAME_CAP}_INCLUDE_DIRS} DESTINATION gvo/include)
     endif()
-
-    install(DIRECTORY ${${GVO_DEP_NAME_CAP}_DIRECTORIES_TO_INSTALL} DESTINATION gvo) # install additional things
-    install(FILES ${${GVO_DEP_NAME_CAP}_FILES_TO_INSTALL} DESTINATION gvo)
 
     foreach(${GVO_DEP_NAME_CAP}_LIBRARY ${${GVO_DEP_NAME_CAP}_LIBRARIES}) # could be list
         if(TARGET ${${GVO_DEP_NAME_CAP}_LIBRARY})
