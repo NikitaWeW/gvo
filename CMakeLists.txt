@@ -9,13 +9,11 @@
 project(gvo)
 add_library(gvo INTERFACE)
 
-list(APPEND GVO_SCRIPT_PATHS "scripts")
-
 foreach(GVO_DEP_NAME ${GVO_DEPS})
     string(TOUPPER ${GVO_DEP_NAME} GVO_DEP_NAME_CAP)
 
     message(STATUS "Finding ${GVO_DEP_NAME}")
-    foreach(GVO_DIR ${GVO_SCRIPT_PATHS}) # find find script
+    foreach(GVO_DIR "scripts" ${GVO_SCRIPT_PATHS}) # find find script
         file(GLOB GVO_FIND_SCRIPT "${GVO_DIR}/Find${GVO_DEP_NAME}.cmake")
         if(GVO_FIND_SCRIPT)
             list(GET GVO_FIND_SCRIPT 0 GVO_FIND_SCRIPT) # leave only the first one.
