@@ -7,6 +7,12 @@ You can use it however you like, but i recommend adding gvo as a submodule and u
 
 For details, see [here](#variables).
 
+- [Using gvo](#using-gvo)
+- [Currently supported dependencies](#currently-supported-dependencies-names)
+- [Variables](#variables)
+- [Some important points](#some-important-points)
+- [Troubleshooting](#troubleshooting)
+
 ## Using gvo
 First, gvo uses git submodules, so make sure you are managing them correctly.
 
@@ -57,13 +63,14 @@ assimp:
         lib:     "assimp"
         include: "D:/gvo/build/gvo/assimp/include/"
 ```
+
 ## Currently supported dependencies (names):
 - [assimp](https://github.com/assimp/assimp)
 - [GLFW](https://github.com/glfw/glfw)
 - [GLM](https://github.com/icaven/glm)
 - [Logger](https://github.com/yksz/c-logger)
 - [OpenAL](https://github.com/kcat/openal-soft)
-- [OpenGL](https://glad.dav1d.de/)
+- [OpenGL](https://github.com/Dav1dde/glad)
 - [Vulkan](https://github.com/KhronosGroup/Vulkan-Headers)
 
 ## Variables
@@ -91,7 +98,16 @@ There are used to install dependencies:
 | `<name>_LIBRARIES_INSTALL` | variable / list with the additional directories to install in `gvo` |
 ---
 
-### Some important points
+Script-specific variables:
+| variable | description | default |
+| :- | :- | :- |
+| `ASSIMP_BUILD_TESTS` |  | OFF |
+| `ASSIMP_WARNINGS_AS_ERRORS` |  | OFF |
+| `ASSIMP_BUILD_ASSIMP_VIEW` | `¯\_(ツ)_/¯` | OFF |
+| `GLAD_API` | what [glad api](https://glad.dav1d.de/) to use. | gl:core=3.3 |
+---
+
+## Some important points
 - gvo also installs any file in the `<name>_LIBRARIES` directory with `.lib .dll .dylib .a .so .framework` extensions (including double extensions, e.g. `.dll.a`) into the `gvo/lib` directory.
 
 - gvo will only use initialised (`if(VAR)`) variables.
@@ -103,7 +119,10 @@ if(NOT VULKAN_INCLUDE_DIRS)
 # do someting and set VULKAN_INCLUDE_DIRS
 endif()
 ```
+- GVO_SCRIPT_PATHS has higher priority than the gvo scripts directory, which means you can override the default scripts.
+
+## Troubleshooting
+Fixes for known issues.
+
 
 *if  you found any kind of bug / flaw or have questions please, create github issue or maybe even a pr )*
-
-
