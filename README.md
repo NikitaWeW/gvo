@@ -1,14 +1,10 @@
 # GVO - dependency manager + [setup](#currently-supported-dependencies)
-This project provides cmakelists to orgenise your dependencies, [these dependencies](#currently-supported-dependencies), and scripts to build and find them. 
+This project provides cmakelists to orgenise your dependencies, [these dependencies](#currently-provided-dependencies-names), and scripts to build and find them. 
 
-You set the GVO_DEPS and add gvo as a subdirectory. gvo will iterate over GVO_DEPS and automatically include all the necessary scripts to set [output variables](#variables) and use them.
-
-You can use it however you like, but i recommend adding gvo as a submodule and using it as a cmake subdirectory.
-
-For details, see [here](#variables).
+Basically, gvo looks for cmake scripts in given directories for each given dependency, and includes them.
 
 - [Using gvo](#using-gvo)
-- [Currently supported dependencies](#currently-supported-dependencies-names)
+- [Currently provided dependencies](#currently-provided-dependencies-names)
 - [Variables](#variables)
 - [Some important points](#some-important-points)
 - [Troubleshooting](#troubleshooting)
@@ -16,7 +12,21 @@ For details, see [here](#variables).
 ## Using gvo
 First, gvo uses git submodules, so make sure you are managing them correctly.
 
-<!-- how to invoke there  -->
+Then, include `gvo.cmake` file:
+``` cmake
+include(gvo/gvo.cmake)
+```
+`gvo_find_dependencies(DEPENDENCIES <dep1>... SCRIPT_PATHS <path1>...)`
+
+Basically, this macro finds and includes cmake scripts that prepare and add dependencies. see [here](#variables) for more information.
+
+- The `DEPENDENCIES` list contains [dependency names](#currently-provided-dependencies-names). It is used to locate and include **find scripts** named `Find<name>.cmake`, e.g. `FindVulkan.cmake`, `FindGLFW.cmake`, `Findassimp.cmake`.
+
+- SCRIPT_PATHS are paths to directories containing scripts. gvo will look for find scripts in these directories. e.g. `${CMAKE_SOURCE_DIR}/find-scripts`, `gvo/scripts`. 
+
+``` cmake
+gvo_find_dependencies(DEPENDENCIES OpenGL GLFW Logger assimp OpenAL GLM imgui SCRIPT_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/scripts ${CMAKE_CURRENT_SOURCE_DIR}/gvo/scripts)
+```
 
 After that, you can just link to `gvo` interface library or link to specific dependency called `gvo_<name>` e.g. `gvo_Vulkan` (see [here](#some-important-points)):
 ``` cmake
@@ -32,34 +42,6 @@ foreach(GVO_DEP_NAME ${GVO_DEPS})
     message("\tinclude: \"${${GVO_DEP_NAME_CAP}_INCLUDE_DIRS}\"")
 endforeach()
 # OR link to all dependencies
-target_link_libraries(mymain gvo) # link to gvo target. this will link both include dirs and libraris.
-```
-
-<!-- 
-Now, you **must** to set [GVO_DEPS variable](#variables):
-``` cmake
-set(GVO_DEPS Vulkan GLFW assimp GLM imgui) # set required  dependencies
-
-#OPTIONAL: specify additional find script paths (see variables)
-set(GVO_SCRIPT_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/find-scripts)
-```
-Then, add gvo as subdirectory:
-``` cmake
-add_subdirectory(gvo) # Add gvo as a subdirectory. This will create a "gvo" interface target.
-```
-You can use [variables](#variables) however you like:
-``` cmake
-# print all the dependencies, include dirs and library files
-foreach(GVO_DEP_NAME ${GVO_DEPS})
-    target_link_libraries(mymain PUBLIC gvo_${GVO_DEP_NAME}) # link to specific dependecy e.g gvo_Vulkan
-    string(TOUPPER ${GVO_DEP_NAME} GVO_DEP_NAME_CAP)
-    message("${GVO_DEP_NAME}:")
-    message("\tlib:     \"${${GVO_DEP_NAME_CAP}_LIBRARIES}\"")
-    message("\tinclude: \"${${GVO_DEP_NAME_CAP}_INCLUDE_DIRS}\"")
-endforeach()
-
-add_executable(mymain src/main.cpp)
-
 target_link_libraries(mymain gvo) # link to gvo target. this will link both include dirs and libraris.
 ```
 
@@ -83,9 +65,9 @@ OpenAL:
 assimp:
         lib:     "assimp"
         include: "D:/gvo/build/gvo/assimp/include/"
-``` -->
+```
 
-## Currently supported dependencies (names):
+## Currently provided dependencies (names):
 - [assimp](https://github.com/assimp/assimp)
 - [GLFW](https://github.com/glfw/glfw)
 - [GLM](https://github.com/icaven/glm)
@@ -96,13 +78,15 @@ assimp:
 
 ## Variables
 `<name>` is the name of the library e.g. `VULKAN_INCLUDE_DIRS`, `VULKAN_LIBRARIES`. 
-
+<!-- 
 These variables are used as inputs in cmakelists and are set before adding gvo as a subdirectory:
 | variable | description |
 | :- | :- |
-| `GVO_DEPS`| The `GVO_DEPS` list contains [names of dependencies](#currently-supported-dependencies). It is used to locate and include **find scripts** named `Find<name>.cmake`, e.g. `FindVulkan.cmake`, `FindGLFW.cmake`, `Findassimp.cmake`. |
-| `GVO_SCRIPT_PATHS` | Path to directory containing additional scripts not provided by gvo, e.g. `${CMAKE_SOURCE_DIR}/find-scripts` gvo will look for find scripts in this directory. |
----
+| `GVO_DEPS`| The `GVO_DEPS`  |
+| `GVO_SCRIPT_PATHS` |  |
+--- -->
+
+The `GVO_SCRIPT_DIR` variable is set before including the script. containing directory of the script. (see [here](#some-important-points)).
 
 These variables are set by the find script. They are already used by gvo target, but you can use them too:
 | variable | description |
@@ -136,13 +120,20 @@ Script-specific variables:
 - gvo will only use initialised (`if(VAR)`) variables.
 
 - User / cmake scripts could also set `<name>_INCLUDE_DIRS` and `<name>_LIBRARIES`, and these should not be overridden (currently they are not. It depends on the find script). 
-I recommend using the following in find scripts
+I recommend using the following in find scripts:
 ``` cmake
 if(NOT VULKAN_INCLUDE_DIRS)
 # do someting and set VULKAN_INCLUDE_DIRS
 endif()
 ```
 - GVO_SCRIPT_PATHS has higher priority than the gvo scripts directory, which means you can override the default scripts.
+
+- When writing scripts, you should use GVO_SCRIPT_DIR instead of CMAKE_CURRENT_SOURCE_DIR to get the actual directory of the script, as the scripts are included. 
+
+- When using gvo's scripts, you need to specify gvo's script directory:
+``` cmake
+gvo_find_dependencies(DEPENDENCIES ... SCRIPT_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/gvo/scripts)
+```
 
 ## Troubleshooting
 Fixes for known issues.

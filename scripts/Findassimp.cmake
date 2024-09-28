@@ -7,6 +7,7 @@
 #THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 if(NOT ASSIMP_LIBRARIES)
+    enable_language(C)
     if(NOT ASSIMP_BUILD_TESTS)    
         set(ASSIMP_BUILD_TESTS OFF)
     endif()
@@ -20,12 +21,12 @@ if(NOT ASSIMP_LIBRARIES)
     add_subdirectory(dependencies/assimp ${CMAKE_CURRENT_BINARY_DIR}/assimp)
     set(ASSIMP_LIBRARIES assimp CACHE STRING "path to assimp libraries")
     if(NOT ASSIMP_INCLUDE_DIRS) # assimp generates some headers for no fucking reason. 
-        set(ASSIMP_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR}/assimp/include/;${CMAKE_CURRENT_SOURCE_DIR}/dependencies/assimp/include/ CACHE STRING "path to assimp include dirs")
+        set(ASSIMP_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR}/assimp/include/;${GVO_SCRIPT_DIR}/../dependencies/assimp/include/ CACHE STRING "path to assimp include dirs")
     endif()
 endif()
 
 if(NOT ASSIMP_INCLUDE_DIRS)
-    set(ASSIMP_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/assimp/include/ CACHE STRING "path to assimp include dirs")
+    set(ASSIMP_INCLUDE_DIRS ${GVO_SCRIPT_DIR}/../dependencies/assimp/include/ CACHE STRING "path to assimp include dirs")
 endif()
 
 list(GET ASSIMP_LIBRARIES 0 ASSIMP_LIBRARIES_0)
