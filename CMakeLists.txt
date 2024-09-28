@@ -31,11 +31,13 @@ foreach(GVO_DEP_NAME ${GVO_DEPS})
     endif()
     message(STATUS "Done finding ${GVO_DEP_NAME}.")
     
+    add_library(gvo_${GVO_DEP_NAME} INTERFACE)
+
     if(DEFINED ${GVO_DEP_NAME_CAP}_LIBRARIES) # link libraries
-        target_link_libraries(gvo INTERFACE ${${GVO_DEP_NAME_CAP}_LIBRARIES})
+        target_link_libraries(gvo_${GVO_DEP_NAME} INTERFACE ${${GVO_DEP_NAME_CAP}_LIBRARIES})
     endif()
     if(DEFINED ${GVO_DEP_NAME_CAP}_INCLUDE_DIRS) # include dirs
-        target_include_directories(gvo INTERFACE ${${GVO_DEP_NAME_CAP}_INCLUDE_DIRS})
+        target_include_directories(gvo_${GVO_DEP_NAME} INTERFACE ${${GVO_DEP_NAME_CAP}_INCLUDE_DIRS})
         install(DIRECTORY ${${GVO_DEP_NAME_CAP}_INCLUDE_DIRS} DESTINATION gvo/include)
     endif()
 

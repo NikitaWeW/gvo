@@ -16,6 +16,26 @@ For details, see [here](#variables).
 ## Using gvo
 First, gvo uses git submodules, so make sure you are managing them correctly.
 
+<!-- how to invoke there  -->
+
+After that, you can just link to `gvo` interface library or link to specific dependency called `gvo_<name>` e.g. `gvo_Vulkan` (see [here](#some-important-points)):
+``` cmake
+
+add_executable(mymain src/main.cpp)
+
+# print all the dependencies, include dirs and library files
+foreach(GVO_DEP_NAME ${GVO_DEPS})
+    target_link_libraries(mymain PUBLIC gvo_${GVO_DEP_NAME}) # link to specific dependecy
+    string(TOUPPER ${GVO_DEP_NAME} GVO_DEP_NAME_CAP)
+    message("${GVO_DEP_NAME}:")
+    message("\tlib:     \"${${GVO_DEP_NAME_CAP}_LIBRARIES}\"")
+    message("\tinclude: \"${${GVO_DEP_NAME_CAP}_INCLUDE_DIRS}\"")
+endforeach()
+# OR link to all dependencies
+target_link_libraries(mymain gvo) # link to gvo target. this will link both include dirs and libraris.
+```
+
+<!-- 
 Now, you **must** to set [GVO_DEPS variable](#variables):
 ``` cmake
 set(GVO_DEPS Vulkan GLFW assimp GLM imgui) # set required  dependencies
@@ -31,6 +51,7 @@ You can use [variables](#variables) however you like:
 ``` cmake
 # print all the dependencies, include dirs and library files
 foreach(GVO_DEP_NAME ${GVO_DEPS})
+    target_link_libraries(mymain PUBLIC gvo_${GVO_DEP_NAME}) # link to specific dependecy e.g gvo_Vulkan
     string(TOUPPER ${GVO_DEP_NAME} GVO_DEP_NAME_CAP)
     message("${GVO_DEP_NAME}:")
     message("\tlib:     \"${${GVO_DEP_NAME_CAP}_LIBRARIES}\"")
@@ -62,7 +83,7 @@ OpenAL:
 assimp:
         lib:     "assimp"
         include: "D:/gvo/build/gvo/assimp/include/"
-```
+``` -->
 
 ## Currently supported dependencies (names):
 - [assimp](https://github.com/assimp/assimp)
@@ -109,6 +130,8 @@ Script-specific variables:
 
 ## Some important points
 - gvo also installs any file in the `<name>_LIBRARIES` directory with `.lib .dll .dylib .a .so .framework` extensions (including double extensions, e.g. `.dll.a`) into the `gvo/lib` directory.
+
+- gvo creates `gvo_<name>` interface library containing `<name>_LIBRARIES` and `<name>_INCLUDE_DIRS` for every dependency and `gvo` interface library containing all `gvo_<name>` libraries.
 
 - gvo will only use initialised (`if(VAR)`) variables.
 
