@@ -1,4 +1,4 @@
-# GVO - dependency manager + [setup](#currently-supported-dependencies)
+# GVO - dependency manager + [setup](#currently-provided-dependencies-names)
 This project provides cmakelists to orgenise your dependencies, [these dependencies](#currently-provided-dependencies-names), and scripts to build and find them. 
 
 Basically, gvo looks for cmake scripts in given directories for each given dependency, and includes them.
