@@ -78,13 +78,6 @@ assimp:
 
 ## Variables
 `<name>` is the name of the library e.g. `VULKAN_INCLUDE_DIRS`, `VULKAN_LIBRARIES`. 
-<!-- 
-These variables are used as inputs in cmakelists and are set before adding gvo as a subdirectory:
-| variable | description |
-| :- | :- |
-| `GVO_DEPS`| The `GVO_DEPS`  |
-| `GVO_SCRIPT_PATHS` |  |
---- -->
 
 The `GVO_SCRIPT_DIR` variable is set before including the script. containing directory of the script. (see [here](#some-important-points)).
 
