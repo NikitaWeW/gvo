@@ -53,6 +53,7 @@ macro(gvo_find_dependencies)
             endif()
         endforeach()
 
+        target_link_libraries(gvo INTERFACE gvo_${GVO_DEP_NAME})
         unset(GVO_FIND_SCRIPT)
     endforeach()
     unset(GVO_DEP_NAME_CAP)
