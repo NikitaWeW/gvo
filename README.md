@@ -16,16 +16,16 @@ Then, include `gvo.cmake` file:
 ``` cmake
 include(gvo/gvo.cmake)
 ```
-`gvo_find_dependencies(DEPENDENCIES <dep1>... SCRIPT_PATHS <path1>...)`
+`gvo_find_dependencies(DEPENDENCIES <dep1>... SCRIPT_DIRS <path1>...)`
 
 Basically, this macro finds and includes cmake scripts that prepare and add dependencies. see [here](#variables) for more information.
 
 - The `DEPENDENCIES` list contains [dependency names](#currently-provided-dependencies-names). It is used to locate and include **find scripts** named `Find<name>.cmake`, e.g. `FindVulkan.cmake`, `FindGLFW.cmake`, `Findassimp.cmake`.
 
-- SCRIPT_PATHS are paths to directories containing scripts. gvo will look for find scripts in these directories. e.g. `${CMAKE_SOURCE_DIR}/find-scripts`, `gvo/scripts`. 
+- SCRIPT_DIRS are paths to directories containing scripts. gvo will look for find scripts in these directories. e.g. `${CMAKE_SOURCE_DIR}/find-scripts`, `gvo/scripts`. 
 
 ``` cmake
-gvo_find_dependencies(DEPENDENCIES OpenGL GLFW Logger assimp OpenAL GLM imgui SCRIPT_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/scripts ${CMAKE_CURRENT_SOURCE_DIR}/gvo/scripts)
+gvo_find_dependencies(DEPENDENCIES OpenGL GLFW Logger assimp OpenAL GLM imgui SCRIPT_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/scripts ${CMAKE_CURRENT_SOURCE_DIR}/gvo/scripts)
 ```
 
 After that, you can just link to `gvo` interface library or link to specific dependency called `gvo_<name>` e.g. `gvo_Vulkan` (see [here](#some-important-points)):
@@ -119,13 +119,13 @@ if(NOT VULKAN_INCLUDE_DIRS)
 # do someting and set VULKAN_INCLUDE_DIRS
 endif()
 ```
-- GVO_SCRIPT_PATHS has higher priority than the gvo scripts directory, which means you can override the default scripts.
+- GVO_SCRIPT_DIRS has higher priority than the gvo scripts directory, which means you can override the default scripts.
 
 - When writing scripts, you should use GVO_SCRIPT_DIR instead of CMAKE_CURRENT_SOURCE_DIR to get the actual directory of the script, as the scripts are included. 
 
 - When using gvo's scripts, you need to specify gvo's script directory:
 ``` cmake
-gvo_find_dependencies(DEPENDENCIES ... SCRIPT_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/gvo/scripts)
+gvo_find_dependencies(DEPENDENCIES ... SCRIPT_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/gvo/scripts)
 ```
 
 ## Troubleshooting

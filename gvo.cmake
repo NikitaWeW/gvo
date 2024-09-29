@@ -1,11 +1,11 @@
 macro(gvo_find_dependencies)
-    cmake_parse_arguments(GVO "" "" "DEPENDENCIES;SCRIPT_PATHS" ${ARGN})
+    cmake_parse_arguments(GVO "" "" "DEPENDENCIES;SCRIPT_DIRS" ${ARGN})
     add_library(gvo INTERFACE)
 
     foreach(GVO_DEP_NAME ${GVO_DEPENDENCIES})
         string(TOUPPER ${GVO_DEP_NAME} GVO_DEP_NAME_CAP)
         message(STATUS "Finding ${GVO_DEP_NAME}.")
-        foreach(GVO_SCRIPT_DIR ${GVO_SCRIPT_PATHS}) # find find script
+        foreach(GVO_SCRIPT_DIR ${GVO_SCRIPT_DIRS}) # find find script
             file(GLOB GVO_FIND_SCRIPT "${GVO_SCRIPT_DIR}/Find${GVO_DEP_NAME}.cmake")
             if(GVO_FIND_SCRIPT)
                 list(GET GVO_FIND_SCRIPT 0 GVO_FIND_SCRIPT) # leave only the first one.
