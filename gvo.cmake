@@ -1,3 +1,5 @@
+include_guard(GLOBAL)
+include(FetchContent)
 macro(gvo_find_dependencies)
     cmake_parse_arguments(GVO "" "" "DEPENDENCIES;SCRIPT_DIRS" ${ARGN})
     add_library(gvo INTERFACE)

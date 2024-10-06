@@ -6,12 +6,21 @@
 #
 #THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+if(NOT VULKAN_INCLUDE_DIRS OR NOT VULKAN_LIBRARIES)
+    FetchContent_Populate( # i wish i could use FetchContent_Declare and FetchContent_MakeAvailable... 
+        vulkan-headers
+        GIT_REPOSITORY https://github.com/KhronosGroup/Vulkan-Headers.git
+        SOURCE_DIR ${GVO_SCRIPT_DIR}/../dependencies/Vulkan-Headers
+        BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/Vulkan-Headers
+    )
+endif()
+
 if(NOT VULKAN_INCLUDE_DIRS)
-    set(VULKAN_INCLUDE_DIRS ${GVO_SCRIPT_DIR}/../dependencies/Vulkan-Headers/include/ CACHE STRING "path to vulkan include dirs")
+    set(VULKAN_INCLUDE_DIRS ${GVO_SCRIPT_DIR}/../dependencies/Vulkan-Headers/include/ CACHE STRING "vulkan include dirs")
 endif()
 
 if(NOT VULKAN_LIBRARIES)
-    enable_language(C)
+    enable_language(C)    
     execute_process( # manualy configure and install vulkan headers (i have no idea)
         COMMAND ${CMAKE_COMMAND} -S ${GVO_SCRIPT_DIR}/../dependencies/Vulkan-Headers -B ${CMAKE_CURRENT_BINARY_DIR}/Vulkan-Headers 
             -G ${CMAKE_GENERATOR}
@@ -34,7 +43,12 @@ if(NOT VULKAN_LIBRARIES)
     endif()
 
     set(VULKAN_HEADERS_INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/Vulkan-Headers)
-    add_subdirectory(dependencies/Vulkan-Loader ${CMAKE_CURRENT_BINARY_DIR}/Vulkan-Loader)
-    set(VULKAN_LIBRARIES vulkan CACHE STRING "path to vulkan libraries")
+    FetchContent_Declare(
+        vulkan-Loader
+        GIT_REPOSITORY https://github.com/KhronosGroup/Vulkan-Loader.git
+        SOURCE_DIR ${GVO_SCRIPT_DIR}/../dependencies/Vulkan-Loader/
+        BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/Vulkan-Loader
+    )
+    set(VULKAN_LIBRARIES vulkan CACHE STRING "vulkan libraries")
     unset(RESULT)
 endif()

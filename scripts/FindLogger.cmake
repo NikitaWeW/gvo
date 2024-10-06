@@ -6,15 +6,24 @@
 #
 #THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+if(NOT LOGGER_INCLUDE_DIRS OR NOT LOGGER_LIBRARIES)
+    FetchContent_Populate(
+        c-logger
+        GIT_REPOSITORY https://github.com/yksz/c-logger.git
+        SOURCE_DIR ${GVO_SCRIPT_DIR}/../dependencies/c-logger
+        BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/c-logger
+    )
+endif()
+
 if(NOT LOGGER_INCLUDE_DIRS)
-    set(LOGGER_INCLUDE_DIRS ${GVO_SCRIPT_DIR}/../dependencies/c-logger/src/ CACHE STRING "path to logger include dirs")
+    set(LOGGER_INCLUDE_DIRS ${GVO_SCRIPT_DIR}/../dependencies/c-logger/src/ CACHE STRING "logger include dirs")
 endif()
 if(NOT LOGGER_LIBRARIES)
     enable_language(C)
     add_subdirectory(${GVO_SCRIPT_DIR}/../dependencies/c-logger "${CMAKE_CURRENT_BINARY_DIR}/c-logger")
     if(BUILD_SHARED_LIBS)
-        set(LOGGER_LIBRARIES logger CACHE STRING "path to logger libraries")
+        set(LOGGER_LIBRARIES logger CACHE STRING "logger libraries")
     else()
-        set(LOGGER_LIBRARIES logger_static CACHE STRING "path to logger libraries")
+        set(LOGGER_LIBRARIES logger_static CACHE STRING "logger libraries")
     endif()
 endif()

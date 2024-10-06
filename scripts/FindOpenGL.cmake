@@ -8,13 +8,20 @@
 
 if(NOT OPENGL_LIBRARIES)
     enable_language(C)
+    FetchContent_Populate(
+        glad
+        GIT_REPOSITORY https://github.com/Dav1dde/glad.git
+        GIT_TAG glad2
+        SOURCE_DIR ${GVO_SCRIPT_DIR}/../dependencies/glad
+        BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/glad
+    )
     if(NOT GLAD_API)
         set(GLAD_API gl:core=3.3)
     endif()
     add_subdirectory(${GVO_SCRIPT_DIR}/../dependencies/glad/cmake ${CMAKE_CURRENT_BINARY_DIR}/glad)
     glad_add_library(glad REPRODUCIBLE API ${GLAD_API} LOCATION ${CMAKE_CURRENT_BINARY_DIR}/glad)
     if(NOT OPENGL_INCLUDE_DIRS)
-        set(OPENGL_LIBRARIES ${CMAKE_CURRENT_BINARY_DIR}/glad/include)
+        set(OPENGL_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR}/glad/include CACHE STRING "opengl include dirs")
     endif()
-    set(OPENGL_LIBRARIES glad)
+    set(OPENGL_LIBRARIES glad CACHE STRING "opengl libraries")
 endif()
