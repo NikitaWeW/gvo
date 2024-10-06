@@ -10,9 +10,8 @@ Basically, gvo looks for cmake scripts in given directories for each given depen
 - [Troubleshooting](#troubleshooting)
 
 ## Using gvo
-First, gvo uses git submodules, so make sure you are managing them correctly.
-
-Then, include `gvo.cmake` file:
+gvo does **not** use submodules anymore.
+Include `gvo.cmake` file:
 ``` cmake
 include(gvo/gvo.cmake)
 ```
@@ -127,6 +126,7 @@ endif()
 ``` cmake
 gvo_find_dependencies(DEPENDENCIES ... SCRIPT_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/gvo/scripts)
 ```
+- gvo scripts use the FetchContent module, which is already included.
 
 ## Troubleshooting
 Fixes for known issues.
