@@ -31,6 +31,6 @@ if(NOT OPENAL_LIBRARIES)
         set(LIBTYPE STATIC)
     endif()
 
-    add_subdirectory(dependencies/OpenAL ${CMAKE_CURRENT_BINARY_DIR}/OpenAL)
+    add_subdirectory(${GVO_SCRIPT_DIR}/../dependencies/OpenAL ${CMAKE_CURRENT_BINARY_DIR}/OpenAL)
     set(OPENAL_LIBRARIES OpenAL CACHE STRING "OpenAL libraries")
 endif()
