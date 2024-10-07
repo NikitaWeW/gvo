@@ -8,13 +8,15 @@
 
 if(NOT OPENGL_LIBRARIES)
     enable_language(C)
-    FetchContent_Populate(
-        glad
-        GIT_REPOSITORY https://github.com/Dav1dde/glad.git
-        GIT_TAG glad2
-        SOURCE_DIR ${GVO_SCRIPT_DIR}/../dependencies/glad
-        BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/glad
-    )
+    if(NOT EXISTS ${GVO_SCRIPT_DIR}/../dependencies/glad)
+        FetchContent_Populate(
+            glad
+            GIT_REPOSITORY https://github.com/Dav1dde/glad.git
+            GIT_TAG glad2
+            SOURCE_DIR ${GVO_SCRIPT_DIR}/../dependencies/glad
+            BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/glad
+        )
+    endif()
     if(NOT GLAD_API)
         set(GLAD_API gl:core=3.3)
     endif()

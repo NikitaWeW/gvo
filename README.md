@@ -126,7 +126,8 @@ endif()
 ``` cmake
 gvo_find_dependencies(DEPENDENCIES ... SCRIPT_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/gvo/scripts)
 ```
-- gvo scripts use the FetchContent module, which is already included.
+- gvo scripts use the FetchContent module to download dependencies, which is already included.
+- gvo will only download dependencies if the corresponding `dependencies/<name>` exists.
 
 ## Troubleshooting
 Fixes for known issues.
