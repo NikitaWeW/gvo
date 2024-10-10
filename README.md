@@ -1,5 +1,5 @@
 # GVO - dependency manager + [setup](#currently-provided-dependencies-names)
-This project provides cmakelists to orgenise your dependencies, [these dependencies](#currently-provided-dependencies-names), and scripts to build and find them. 
+This project provides a cmake module for organising your dependencies, as well as [these dependencies](#currently-provided-dependencies-names) for graphical programming, and scripts to build and find them. 
 
 Basically, gvo looks for cmake scripts in given directories for each given dependency, and includes them.
 
@@ -24,7 +24,7 @@ Basically, this macro finds and includes cmake scripts that prepare and add depe
 - SCRIPT_DIRS are paths to directories containing scripts. gvo will look for find scripts in these directories. e.g. `${CMAKE_SOURCE_DIR}/find-scripts`, `gvo/scripts`. 
 
 ``` cmake
-gvo_find_dependencies(DEPENDENCIES OpenGL GLFW Logger assimp OpenAL GLM imgui SCRIPT_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/scripts ${CMAKE_CURRENT_SOURCE_DIR}/gvo/scripts)
+gvo_find_dependencies(DEPENDENCIES OpenGL GLFW assimp OpenAL GLM imgui SCRIPT_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/scripts ${CMAKE_CURRENT_SOURCE_DIR}/gvo/scripts)
 ```
 
 After that, you can just link to `gvo` interface library or link to specific dependency called `gvo_<name>` e.g. `gvo_Vulkan` (see [here](#some-important-points)):
@@ -52,9 +52,6 @@ OpenGL:
 GLFW:
         lib:     "glfw"
         include: "D:/glfw/include"
-Logger:
-        lib:     "logger"
-        include: "D:/gvo/dependencies/c-logger/src/"
 GLM:
         lib:     "" <- header only. not initialised.
         include: "D:/gvo/dependencies/glm/glm/"
@@ -70,7 +67,6 @@ assimp:
 - [assimp](https://github.com/assimp/assimp)
 - [GLFW](https://github.com/glfw/glfw)
 - [GLM](https://github.com/icaven/glm)
-- [Logger](https://github.com/yksz/c-logger)
 - [OpenAL](https://github.com/kcat/openal-soft)
 - [OpenGL](https://github.com/Dav1dde/glad)
 - [Vulkan](https://github.com/KhronosGroup/Vulkan-Headers)
