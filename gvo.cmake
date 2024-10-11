@@ -27,20 +27,19 @@ macro(gvo_find_dependencies)
         
         add_library(gvo_${GVO_DEP_NAME} INTERFACE)
 
-        if(DEFINED ${GVO_DEP_NAME_CAP}_LIBRARIES) # link libraries
+        if(${GVO_DEP_NAME_CAP}_LIBRARIES) # link libraries
             target_link_libraries(gvo_${GVO_DEP_NAME} INTERFACE ${${GVO_DEP_NAME_CAP}_LIBRARIES})
         endif()
-        if(DEFINED ${GVO_DEP_NAME_CAP}_INCLUDE_DIRS) # include dirs
+        if(${GVO_DEP_NAME_CAP}_INCLUDE_DIRS) # include dirs
             target_include_directories(gvo_${GVO_DEP_NAME} INTERFACE ${${GVO_DEP_NAME_CAP}_INCLUDE_DIRS})
-            if(NOT DEFINED ${GVO_DEP_NAME_CAP}_INSTALL_INCLUDE_DIRS OR ${${GVO_DEP_NAME_CAP}_INSTALL_INCLUDE_DIRS}) # could be not initialised
-                message("${GVO_DEP_NAME_CAP}_INCLUDE_DIRS = ${${GVO_DEP_NAME_CAP}_INCLUDE_DIRS}") # DEBUG SHOULD BE REMOVED
+            if(NOT DEFINED ${GVO_DEP_NAME_CAP}_INSTALL_INCLUDE_DIRS OR "${${GVO_DEP_NAME_CAP}_INSTALL_INCLUDE_DIRS}") # could be not initialised
                 foreach(${GVO_DEP_NAME_CAP}_INCLUDE_DIR ${${GVO_DEP_NAME_CAP}_INCLUDE_DIRS})
                     install(DIRECTORY ${${GVO_DEP_NAME_CAP}_INCLUDE_DIRS} DESTINATION include)
                 endforeach()
             endif()
         endif()
 
-        if(NOT DEFINED ${GVO_DEP_NAME_CAP}_INSTALL_LIBS OR ${${GVO_DEP_NAME_CAP}_INSTALL_LIBS})
+        if(NOT DEFINED ${GVO_DEP_NAME_CAP}_INSTALL_LIBS OR "${${GVO_DEP_NAME_CAP}_INSTALL_LIBS}")
             foreach(${GVO_DEP_NAME_CAP}_LIBRARY ${${GVO_DEP_NAME_CAP}_LIBRARIES}) # could be list
                 if(TARGET ${${GVO_DEP_NAME_CAP}_LIBRARY})
                     add_dependencies(gvo ${${GVO_DEP_NAME_CAP}_LIBRARY})

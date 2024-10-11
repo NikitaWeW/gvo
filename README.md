@@ -75,11 +75,13 @@ assimp:
 ## Variables
 `<name>` is the name of the library e.g. `VULKAN_INCLUDE_DIRS`, `VULKAN_LIBRARIES`. 
 
-The `GVO_SCRIPT_DIR` variable is set before including the script. containing directory of the script. (see [here](#some-important-points)).
+The `GVO_SCRIPT_DIR` variable is set by gvo before including the script. containing directory of the script. (see [here](#some-important-points)).
 
 These variables are set by the find script. They are already used by gvo target, but you can use them too:
 | variable | description |
 | :- | :- |
+| `<name>_INSTALL_INCLUDE_DIRS` | controlls if gvo should install `<name>_INCLUDE_DIRS` |
+| `<name>_INSTALL_LIBS` | controlls if gvo should install `<name>_LIBRARIES` |
 | `<name>_INCLUDE_DIRS` | variable / list of dependency include directories. Used as include directories in gvo target. |
 | `<name>_LIBRARIES` | variable / list with the library files of the dependency. gvo will link to them. Will be installed. |
 ---
