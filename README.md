@@ -114,16 +114,15 @@ if(NOT VULKAN_INCLUDE_DIRS)
 # do someting and set VULKAN_INCLUDE_DIRS
 endif()
 ```
-- GVO_SCRIPT_DIRS has higher priority than the gvo scripts directory, which means you can override the default scripts.
 
 - When writing scripts, you should use GVO_SCRIPT_DIR instead of CMAKE_CURRENT_SOURCE_DIR to get the actual directory of the script, as the scripts are included. 
 
-- When using gvo's scripts, you need to specify gvo's script directory:
+- When using gvo's build in scripts, you need to specify gvo's script directory:
 ``` cmake
 gvo_find_dependencies(DEPENDENCIES ... SCRIPT_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/gvo/scripts)
 ```
-- gvo scripts use the FetchContent module to download dependencies, which is already included.
-- gvo will only download dependencies if the corresponding `dependencies/<name>` exists.
+- gvo build in scripts use the FetchContent module to download dependencies, which is already included.
+- gvo build in scripts will only download dependencies if the corresponding `dependencies/<name>` exists.
 
 ## Troubleshooting
 Fixes for known issues.
