@@ -11,6 +11,7 @@ Basically, gvo looks for cmake scripts in given directories for each given depen
 
 ## Using gvo
 gvo does **not** use submodules anymore.
+
 Include `gvo.cmake` file:
 ``` cmake
 include(gvo/gvo.cmake)
@@ -80,15 +81,7 @@ These variables are set by the find script. They are already used by gvo target,
 | variable | description |
 | :- | :- |
 | `<name>_INCLUDE_DIRS` | variable / list of dependency include directories. Used as include directories in gvo target. |
-| `<name>_LIBRARIES` | variable / list with the library files of the dependency. gvo target will link to them. Will be installed to `gvo/lib`. |
----
-
-There are used to install dependencies:
-| variable | description |
-| :- | :- |
-| `<name>_LIBRARY_FILES_TO_INSTALL` | variable / list with the library files to install in `gvo/lib` |
-| `<name>_FILES_TO_INSTALL` | variable / list with the additional files to install in `gvo` |
-| `<name>_LIBRARIES_INSTALL` | variable / list with the additional directories to install in `gvo` |
+| `<name>_LIBRARIES` | variable / list with the library files of the dependency. gvo will link to them. Will be installed. |
 ---
 
 Script-specific variables:
@@ -117,12 +110,12 @@ endif()
 
 - When writing scripts, you should use GVO_SCRIPT_DIR instead of CMAKE_CURRENT_SOURCE_DIR to get the actual directory of the script, as the scripts are included. 
 
-- When using gvo's build in scripts, you need to specify gvo's script directory:
+- When using gvo's build-in scripts, you need to specify gvo's script directory:
 ``` cmake
 gvo_find_dependencies(DEPENDENCIES ... SCRIPT_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/gvo/scripts)
 ```
-- gvo build in scripts use the FetchContent module to download dependencies, which is already included.
-- gvo build in scripts will only download dependencies if the corresponding `dependencies/<name>` exists.
+- gvo build-in scripts use the FetchContent module to download dependencies, which is already included.
+- gvo build-in scripts will only download dependencies if the corresponding `dependencies/<name>` exists.
 
 ## Troubleshooting
 Fixes for known issues.
