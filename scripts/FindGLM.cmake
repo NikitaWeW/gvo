@@ -15,5 +15,7 @@ if(NOT GLM_INCLUDE_DIRS)
             BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/glm
         )
     endif()
+    set(GLM_INSTALL_INCLUDE_DIRS OFF)
+    install(DIRECTORY ${GVO_SCRIPT_DIR}/../dependencies/glm/glm DESTINATION include)
     set(GLM_INCLUDE_DIRS ${GVO_SCRIPT_DIR}/../dependencies/glm/ CACHE STRING "glm include dirs")
 endif()

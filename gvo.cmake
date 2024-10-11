@@ -32,28 +32,35 @@ macro(gvo_find_dependencies)
         endif()
         if(DEFINED ${GVO_DEP_NAME_CAP}_INCLUDE_DIRS) # include dirs
             target_include_directories(gvo_${GVO_DEP_NAME} INTERFACE ${${GVO_DEP_NAME_CAP}_INCLUDE_DIRS})
-            install(DIRECTORY ${${GVO_DEP_NAME_CAP}_INCLUDE_DIRS} TYPE INCLUDE)
+            if(NOT DEFINED ${GVO_DEP_NAME_CAP}_INSTALL_INCLUDE_DIRS OR ${${GVO_DEP_NAME_CAP}_INSTALL_INCLUDE_DIRS}) # could be not initialised
+                message("${GVO_DEP_NAME_CAP}_INCLUDE_DIRS = ${${GVO_DEP_NAME_CAP}_INCLUDE_DIRS}") # DEBUG SHOULD BE REMOVED
+                foreach(${GVO_DEP_NAME_CAP}_INCLUDE_DIR ${${GVO_DEP_NAME_CAP}_INCLUDE_DIRS})
+                    install(DIRECTORY ${${GVO_DEP_NAME_CAP}_INCLUDE_DIRS} DESTINATION include)
+                endforeach()
+            endif()
         endif()
 
-        foreach(${GVO_DEP_NAME_CAP}_LIBRARY ${${GVO_DEP_NAME_CAP}_LIBRARIES}) # could be list
-            if(TARGET ${${GVO_DEP_NAME_CAP}_LIBRARY})
-                add_dependencies(gvo ${${GVO_DEP_NAME_CAP}_LIBRARY})
-                install(TARGETS ${${GVO_DEP_NAME_CAP}_LIBRARY})
-            else() # its a file
-                set(GVO_ADDITIONAL_LIBRARY_FILES_FOUND) # get all files with lib dll dylib a so framework extensions
-                foreach(GVO_LIBRARY_EXTENSION "lib" "dll" "dylib" "a" "so" "framework")
-                    get_filename_component(GVO_ADDITIONAL_LIBRARY_FILES_DIR ${${GVO_DEP_NAME_CAP}_LIBRARY} DIRECTORY)  # get directory of library file
-                    file(GLOB GVO_ADDITIONAL_LIBRARY_FILES "${GVO_ADDITIONAL_LIBRARY_FILES_DIR}/*.${GVO_LIBRARY_EXTENSION}") # find files with extension i.e. .a -> lib1.dll.a lib2.a
-                    list(APPEND GVO_ADDITIONAL_LIBRARY_FILES_FOUND ${GVO_ADDITIONAL_LIBRARY_FILES}) # add these files
-                endforeach()
-                unset(GVO_ADDITIONAL_LIBRARY_FILES)
-                unset(GVO_ADDITIONAL_LIBRARY_FILES_DIR)
+        if(NOT DEFINED ${GVO_DEP_NAME_CAP}_INSTALL_LIBS OR ${${GVO_DEP_NAME_CAP}_INSTALL_LIBS})
+            foreach(${GVO_DEP_NAME_CAP}_LIBRARY ${${GVO_DEP_NAME_CAP}_LIBRARIES}) # could be list
+                if(TARGET ${${GVO_DEP_NAME_CAP}_LIBRARY})
+                    add_dependencies(gvo ${${GVO_DEP_NAME_CAP}_LIBRARY})
+                    install(TARGETS ${${GVO_DEP_NAME_CAP}_LIBRARY})
+                else() # its a file
+                    set(GVO_ADDITIONAL_LIBRARY_FILES_FOUND) # get all files with lib dll dylib a so framework extensions
+                    foreach(GVO_LIBRARY_EXTENSION "lib" "dll" "dylib" "a" "so" "framework")
+                        get_filename_component(GVO_ADDITIONAL_LIBRARY_FILES_DIR ${${GVO_DEP_NAME_CAP}_LIBRARY} DIRECTORY)  # get directory of library file
+                        file(GLOB GVO_ADDITIONAL_LIBRARY_FILES "${GVO_ADDITIONAL_LIBRARY_FILES_DIR}/*.${GVO_LIBRARY_EXTENSION}") # find files with extension i.e. .a -> lib1.dll.a lib2.a
+                        list(APPEND GVO_ADDITIONAL_LIBRARY_FILES_FOUND ${GVO_ADDITIONAL_LIBRARY_FILES}) # add these files
+                    endforeach()
+                    unset(GVO_ADDITIONAL_LIBRARY_FILES)
+                    unset(GVO_ADDITIONAL_LIBRARY_FILES_DIR)
 
-                list(REMOVE_DUPLICATES GVO_ADDITIONAL_LIBRARY_FILES_FOUND) # remove duplicates
-                install(FILES ${${GVO_DEP_NAME_CAP}_LIBRARY} ${GVO_ADDITIONAL_LIBRARY_FILES_FOUND} TYPE LIB) # ${${GVO_DEP_NAME_CAP}_LIBRARY} is guaranteed to be initialised (for loop)
-                unset(GVO_ADDITIONAL_LIBRARY_FILES_FOUND)
-            endif()
-        endforeach()
+                    list(REMOVE_DUPLICATES GVO_ADDITIONAL_LIBRARY_FILES_FOUND) # remove duplicates
+                    install(FILES ${${GVO_DEP_NAME_CAP}_LIBRARY} ${GVO_ADDITIONAL_LIBRARY_FILES_FOUND} DESTINATION lib) # ${${GVO_DEP_NAME_CAP}_LIBRARY} is guaranteed to be initialised (for loop)
+                    unset(GVO_ADDITIONAL_LIBRARY_FILES_FOUND)
+                endif()
+            endforeach()
+        endif()
 
         target_link_libraries(gvo INTERFACE gvo_${GVO_DEP_NAME})
         unset(GVO_FIND_SCRIPT)

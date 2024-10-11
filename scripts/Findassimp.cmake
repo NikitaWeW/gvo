@@ -15,6 +15,10 @@ if((NOT ASSIMP_INCLUDE_DIRS OR NOT ASSIMP_LIBRARIES) AND NOT EXISTS ${GVO_SCRIPT
     )
 endif()
 
+if(NOT ASSIMP_INCLUDE_DIRS)
+    set(ASSIMP_INCLUDE_DIRS ${GVO_SCRIPT_DIR}/../dependencies/assimp/include CACHE STRING "assimp include dirs")
+endif()
+
 if(NOT ASSIMP_LIBRARIES)
     enable_language(C)
     if(NOT ASSIMP_BUILD_TESTS)    
@@ -30,12 +34,8 @@ if(NOT ASSIMP_LIBRARIES)
     add_subdirectory(${GVO_SCRIPT_DIR}/../dependencies/assimp ${CMAKE_CURRENT_BINARY_DIR}/assimp)
     set(ASSIMP_LIBRARIES assimp CACHE STRING "assimp libraries")
     if(NOT ASSIMP_INCLUDE_DIRS) # assimp generates some headers for no fucking reason. 
-        set(ASSIMP_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR}/assimp/include/;${GVO_SCRIPT_DIR}/../dependencies/assimp/include/ CACHE STRING "assimp include dirs")
+        set(ASSIMP_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR}/assimp/include;${GVO_SCRIPT_DIR}/../dependencies/assimp/include CACHE STRING "assimp include dirs")
     endif()
-endif()
-
-if(NOT ASSIMP_INCLUDE_DIRS)
-    set(ASSIMP_INCLUDE_DIRS ${GVO_SCRIPT_DIR}/../dependencies/assimp/include/ CACHE STRING "assimp include dirs")
 endif()
 
 list(GET ASSIMP_LIBRARIES 0 ASSIMP_LIBRARIES_0) # hacky way to install shared libraries
