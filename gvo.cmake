@@ -32,13 +32,13 @@ macro(gvo_find_dependencies)
         endif()
         if(DEFINED ${GVO_DEP_NAME_CAP}_INCLUDE_DIRS) # include dirs
             target_include_directories(gvo_${GVO_DEP_NAME} INTERFACE ${${GVO_DEP_NAME_CAP}_INCLUDE_DIRS})
-            install(DIRECTORY ${${GVO_DEP_NAME_CAP}_INCLUDE_DIRS} DESTINATION gvo/include)
+            install(DIRECTORY ${${GVO_DEP_NAME_CAP}_INCLUDE_DIRS} TYPE INCLUDE)
         endif()
 
         foreach(${GVO_DEP_NAME_CAP}_LIBRARY ${${GVO_DEP_NAME_CAP}_LIBRARIES}) # could be list
             if(TARGET ${${GVO_DEP_NAME_CAP}_LIBRARY})
                 add_dependencies(gvo ${${GVO_DEP_NAME_CAP}_LIBRARY})
-                install(TARGETS ${${GVO_DEP_NAME_CAP}_LIBRARY} DESTINATION gvo/lib)
+                install(TARGETS ${${GVO_DEP_NAME_CAP}_LIBRARY})
             else() # its a file
                 set(GVO_ADDITIONAL_LIBRARY_FILES_FOUND) # get all files with lib dll dylib a so framework extensions
                 foreach(GVO_LIBRARY_EXTENSION "lib" "dll" "dylib" "a" "so" "framework")
@@ -50,7 +50,7 @@ macro(gvo_find_dependencies)
                 unset(GVO_ADDITIONAL_LIBRARY_FILES_DIR)
 
                 list(REMOVE_DUPLICATES GVO_ADDITIONAL_LIBRARY_FILES_FOUND) # remove duplicates
-                install(FILES ${${GVO_DEP_NAME_CAP}_LIBRARY} ${GVO_ADDITIONAL_LIBRARY_FILES_FOUND} ${${GVO_DEP_NAME_CAP}_LIBRARIES_INSTALL} DESTINATION gvo/lib)
+                install(FILES ${${GVO_DEP_NAME_CAP}_LIBRARY} ${GVO_ADDITIONAL_LIBRARY_FILES_FOUND} TYPE LIB) # ${${GVO_DEP_NAME_CAP}_LIBRARY} is guaranteed to be initialised (for loop)
                 unset(GVO_ADDITIONAL_LIBRARY_FILES_FOUND)
             endif()
         endforeach()

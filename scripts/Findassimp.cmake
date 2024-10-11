@@ -38,7 +38,11 @@ if(NOT ASSIMP_INCLUDE_DIRS)
     set(ASSIMP_INCLUDE_DIRS ${GVO_SCRIPT_DIR}/../dependencies/assimp/include/ CACHE STRING "assimp include dirs")
 endif()
 
-list(GET ASSIMP_LIBRARIES 0 ASSIMP_LIBRARIES_0)
-get_filename_component(ASSIMP_LIB_DIR ${ASSIMP_LIBRARIES_0} DIRECTORY)
-file(GLOB ASSIMP_LIBRARIES_INSTALL "${ASSIMP_LIB_DIR}/../bin/*assimp*")
-unset(ASSIMP_LIB_DIR)
+list(GET ASSIMP_LIBRARIES 0 ASSIMP_LIBRARIES_0) # hacky way to install shared libraries
+if(EXISTS ${ASSIMP_LIBRARIES_0}) # if ASSIMP_LIBRARIES_0 is a file
+    get_filename_component(ASSIMP_LIB_DIR ${ASSIMP_LIBRARIES_0} DIRECTORY)
+    file(GLOB ASSIMP_LIBRARIES_INSTALL "${ASSIMP_LIB_DIR}/../bin/*assimp*")
+    install(FILES ${ASSIMP_LIBRARIES_INSTALL} TYPE LIB)
+    unset(ASSIMP_LIB_DIR)
+endif()
+unset(ASSIMP_LIBRARIES_INSTALL)
