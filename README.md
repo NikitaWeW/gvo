@@ -71,6 +71,7 @@ assimp:
 - [OpenAL](https://github.com/kcat/openal-soft)
 - [OpenGL](https://github.com/Dav1dde/glad)
 - [Vulkan](https://github.com/KhronosGroup/Vulkan-Headers)
+- [STB](https://github.com/nothings/stb)
 
 ## Variables
 `<name>` is the name of the library e.g. `VULKAN_INCLUDE_DIRS`, `VULKAN_LIBRARIES`. 
