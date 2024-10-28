@@ -6,7 +6,7 @@
 #
 #THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-if((NOT VULKAN_INCLUDE_DIRS OR NOT VULKAN_LIBRARIES) AND NOT EXISTS ${GVO_SCRIPT_DIR}/../dependencies/)
+if((NOT VULKAN_INCLUDE_DIRS OR NOT VULKAN_LIBRARIES) AND NOT EXISTS ${GVO_SCRIPT_DIR}/../dependencies/Vulkan-Headers)
     FetchContent_Populate( # i wish i could use FetchContent_Declare and FetchContent_MakeAvailable... 
         vulkan-headers
         GIT_REPOSITORY https://github.com/KhronosGroup/Vulkan-Headers.git
@@ -43,12 +43,16 @@ if(NOT VULKAN_LIBRARIES)
     endif()
 
     set(VULKAN_HEADERS_INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/Vulkan-Headers)
-    FetchContent_Declare(
-        vulkan-Loader
-        GIT_REPOSITORY https://github.com/KhronosGroup/Vulkan-Loader.git
-        SOURCE_DIR ${GVO_SCRIPT_DIR}/../dependencies/Vulkan-Loader/
-        BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/Vulkan-Loader
-    )
+    if(NOT EXISTS ${GVO_SCRIPT_DIR}/../dependencies/Vulkan-Loader)
+        FetchContent_Populate(
+            vulkan-loader
+            GIT_REPOSITORY https://github.com/KhronosGroup/Vulkan-Loader.git
+            GIT_TAG main
+            SOURCE_DIR ${GVO_SCRIPT_DIR}/../dependencies/Vulkan-Loader/
+            BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/Vulkan-Loader
+        )
+    endif()
+    add_subdirectory(${GVO_SCRIPT_DIR}/../dependencies/Vulkan-Loader ${CMAKE_CURRENT_BINARY_DIR}/Vulkan-Loader)
     set(VULKAN_LIBRARIES vulkan CACHE STRING "vulkan libraries")
     unset(RESULT)
 endif()
