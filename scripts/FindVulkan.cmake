@@ -29,34 +29,33 @@ if(NOT VULKAN_LIBRARIES)
     )
     if(NOT ${RESULT} EQUAL 0)
         message(WARNING "failed to configure vulkan headers")
-    else()
+    endif()
     execute_process(
         COMMAND ${CMAKE_COMMAND} --install ${CMAKE_CURRENT_BINARY_DIR}/Vulkan-Headers --prefix ${CMAKE_CURRENT_BINARY_DIR}/Vulkan-Headers/
         RESULT_VARIABLE RESULT
     )
     if(NOT ${RESULT} EQUAL 0)
         message(WARNING "failed to install vulkan headers")
-    else()
-        if(NOT VULKAN_INCLUDE_DIR)
-            set(VULKAN_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR}/Vulkan-Headers/include)
-        endif()
-        set(VULKAN_HEADERS_INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/Vulkan-Headers)
-        if(NOT VULKAN_LOADER_GIT_TAG)
-            set(VULKAN_LOADER_GIT_TAG v1.3.300)
-        endif()
-        if(NOT EXISTS ${GVO_SCRIPT_DIR}/../dependencies/Vulkan-Loader)
-            FetchContent_Populate(
-                vulkan-loader
-                GIT_REPOSITORY https://github.com/KhronosGroup/Vulkan-Loader.git
-                GIT_TAG ${VULKAN_LOADER_GIT_TAG}
-                SOURCE_DIR ${GVO_SCRIPT_DIR}/../dependencies/Vulkan-Loader/
-                BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/Vulkan-Loader
-            )
-        endif()
-        add_subdirectory(${GVO_SCRIPT_DIR}/../dependencies/Vulkan-Loader ${CMAKE_CURRENT_BINARY_DIR}/Vulkan-Loader)
-        set(VULKAN_LIBRARIES vulkan CACHE STRING "vulkan libraries")
-        unset(RESULT)
     endif()
+    if(NOT VULKAN_INCLUDE_DIR)
+        set(VULKAN_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR}/Vulkan-Headers/include)
+    endif()
+    set(VULKAN_HEADERS_INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/Vulkan-Headers)
+    if(NOT VULKAN_LOADER_GIT_TAG)
+        set(VULKAN_LOADER_GIT_TAG v1.3.300)
+    endif()
+    if(NOT EXISTS ${GVO_SCRIPT_DIR}/../dependencies/Vulkan-Loader)
+        FetchContent_Populate(
+            vulkan-loader
+            GIT_REPOSITORY https://github.com/KhronosGroup/Vulkan-Loader.git
+            GIT_TAG ${VULKAN_LOADER_GIT_TAG}
+            SOURCE_DIR ${GVO_SCRIPT_DIR}/../dependencies/Vulkan-Loader/
+            BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/Vulkan-Loader
+        )
+    endif()
+    add_subdirectory(${GVO_SCRIPT_DIR}/../dependencies/Vulkan-Loader ${CMAKE_CURRENT_BINARY_DIR}/Vulkan-Loader)
+    set(VULKAN_LIBRARIES vulkan CACHE STRING "vulkan libraries")
+    unset(RESULT)
 endif()
 
 if(NOT VULKAN_INCLUDE_DIRS)
