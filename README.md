@@ -94,6 +94,8 @@ Script-specific variables:
 | `ASSIMP_WARNINGS_AS_ERRORS` |  | OFF |
 | `ASSIMP_BUILD_ASSIMP_VIEW` | `¯\_(ツ)_/¯` | OFF |
 | `GLAD_API` | what [glad api](https://glad.dav1d.de/) to use. | gl:core=3.3 |
+| `VULKAN_HEADERS_GIT_TAG` | what [vulkan headers](https://github.com/KhronosGroup/Vulkan-Headers) git tag to fetch | `v1.3.300` |
+| `VULKAN_LOADER_GIT_TAG` | what [vulkan loader](https://github.com/KhronosGroup/Vulkan-Loader) git tag to fetch | `v1.3.300` |
 ---
 
 ## Some important points
