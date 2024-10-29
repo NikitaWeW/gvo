@@ -27,6 +27,9 @@ if(NOT VULKAN_LIBRARIES)
         -G ${CMAKE_GENERATOR}
         -D CMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}"
     )
+    if(NOT ${RESULT} EQUAL 0)
+        message(WARNING "failed to configure vulkan headers")
+    else()
     execute_process(
         COMMAND ${CMAKE_COMMAND} --install ${CMAKE_CURRENT_BINARY_DIR}/Vulkan-Headers --prefix ${CMAKE_CURRENT_BINARY_DIR}/Vulkan-Headers/
         RESULT_VARIABLE RESULT
