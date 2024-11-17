@@ -11,6 +11,7 @@ if((NOT OPENAL_INCLUDE_DIRS OR NOT OPENAL_LIBRARIES) AND NOT EXISTS ${GVO_SCRIPT
         openal
         GIT_REPOSITORY https://github.com/kcat/openal-soft.git
         SOURCE_DIR ${GVO_SCRIPT_DIR}/../dependencies/OpenAL
+        BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/OpenAL
     )
 endif()
 

@@ -33,7 +33,7 @@ if(NOT ASSIMP_LIBRARIES)
 
     add_subdirectory(${GVO_SCRIPT_DIR}/../dependencies/assimp ${CMAKE_CURRENT_BINARY_DIR}/assimp)
     set(ASSIMP_LIBRARIES assimp CACHE STRING "assimp libraries")
-    if(NOT ASSIMP_INCLUDE_DIRS) # assimp generates some headers for no fucking reason. 
+    if(NOT ASSIMP_INCLUDE_DIRS) # assimp generates some headers for some fucking reason. 
         set(ASSIMP_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR}/assimp/include;${GVO_SCRIPT_DIR}/../dependencies/assimp/include CACHE STRING "assimp include dirs")
     endif()
 endif()
